@@ -6,10 +6,22 @@ package main
 /*
 #cgo LDFLAGS: ./lib/libhello.a -ldl
 #include "./lib/hello.h"
+#include <stdlib.h>
 */
 import "C"
+import (
+	"fmt"
+	"unsafe"
+)
 
 func main() {
-	C.hello(C.CString("world"))
-	C.whisper(C.CString("this is code from the static library"))
+	for i := 0; ; i++ {
+		func() {
+			msg := C.CString(fmt.Sprintf("%d", i))
+			defer C.free(unsafe.Pointer(msg))
+			response := C.echo(msg)
+			output := C.GoString(response)
+			fmt.Println(output)
+		}()
+	}
 }

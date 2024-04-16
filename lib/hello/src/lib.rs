@@ -1,4 +1,4 @@
-use std::ffi::CStr;
+use std::ffi::{CStr,CString};
 
 #[no_mangle]
 pub extern "C" fn hello(name: *const libc::c_char) {
@@ -12,6 +12,13 @@ pub extern "C" fn whisper(message: *const libc::c_char) {
     let message_cstr = unsafe { CStr::from_ptr(message) };
     let message = message_cstr.to_str().unwrap();
     println!("({})", message);
+}
+
+#[no_mangle]
+pub extern "C" fn echo(message: *const libc::c_char) -> *const libc::c_char {
+    let message_cstr = unsafe { CStr::from_ptr(message) };
+    let message = message_cstr.to_str().unwrap();
+    CString::new(message).unwrap().into_raw()
 }
 
 // This is present so it's easy to test that the code works natively in Rust via `cargo test`
