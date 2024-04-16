@@ -4,3 +4,4 @@
 void hello(char *name);
 void whisper(char *message);
 char* echo(char *msg);
+void dealloc(char *msg);

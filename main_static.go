@@ -22,6 +22,7 @@ func main() {
 			response := C.echo(msg)
 			output := C.GoString(response)
 			fmt.Println(output)
+			C.dealloc(response)
 		}()
 	}
 }

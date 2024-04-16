@@ -21,6 +21,12 @@ pub extern "C" fn echo(message: *const libc::c_char) -> *const libc::c_char {
     CString::new(message).unwrap().into_raw()
 }
 
+#[no_mangle]
+pub extern "C" fn dealloc(ptr: *mut libc::c_char) {
+    // retake pointer to free memory
+    let _ = unsafe { CString::from_raw(ptr) };
+}
+
 // This is present so it's easy to test that the code works natively in Rust via `cargo test`
 #[cfg(test)]
 pub mod test {
